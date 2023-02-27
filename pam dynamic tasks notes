@@ -1,0 +1,33 @@
+dynamic user task body
+
+{
+ "name" : "RequestManagerApproval",
+ "data" : {
+  "reason" : "Fixed hardware spec",
+  "caseFile_hwSpec" : "#{caseFile_hwSpec}"
+  }, 
+ "description" : "Ask for manager approval again",
+ "actors" : "manager",
+ "groups" : "" 
+}
+
+synamic service body
+
+{
+ "name" : "InvokeService",
+ "data" : {
+  "Parameter" : "Fixed hardware spec",
+  "Interface" : "org.jbpm.demo.itorders.services.ITOrderService",
+  "Operation" : "printMessage",
+  "ParameterType" : "java.lang.String"
+  }, 
+ "nodeType" : "Service Task"
+}
+
+
+Number and names, types of data given to create service tasks completely depends on the implementation of service task’s handler. In this example org.jbpm.process.workitem.bpmn2.ServiceTaskHandler was used.
+NOTE: For any custom service tasks, make sure handler is registered in deployment descriptor in WorkItem Handler section where the name is same as nodeType used when creating a dynamic service task.
+
+
+MAPPING OF OUTPUT DATA
+Typically when dealing with regular tasks or subprocesses to map output data, users define data output associations to instruct the engine on what output of the source (task or sub process instance) to be mapped to what process instance variable. Since dynamic tasks do not have data output definition there is only one way to put output from task/subprocess to the process instance – by name. This means the name of the returned output of a task must match by name process variable to be mapped. Otherwise it will ignore that output, why is that? It’s to safe guard case/process instance of putting unrelated variables and thus only expected information will be propagated back to case/process instance.
